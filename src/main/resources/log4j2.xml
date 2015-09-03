@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF" shutdownHook="disable">
+	<appenders>
+		<RollingRandomAccessFile name="infoRollingFile"
+			fileName="${logFilePath}/log" filePattern="${logFilePath}/%d{yyyy-MM-dd}/%i.log.gz"
+			append="false">
+			<ThresholdFilter level="INFO" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout>
+				<Pattern>%d{ISO8601} %p %C{20} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="500" />
+		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="errorRollingFile"
+			fileName="${logFilePath}/error.log" filePattern="${logFilePath}/%d{yyyy-MM-dd}/error.%i.log.gz"
+			append="false">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout>
+				<Pattern>%d{ISO8601} %p %C{20} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="500" />
+		</RollingRandomAccessFile>
+	</appenders>
+	<loggers>
+		<asyncRoot level="${logLevel}" includeLocation="true">
+			<appender-ref ref="infoRollingFile" />
+			<appender-ref ref="errorRollingFile" />
+		</asyncRoot>
+	</loggers>
+</configuration>
